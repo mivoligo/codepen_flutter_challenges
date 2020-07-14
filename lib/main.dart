@@ -26,27 +26,55 @@ class MyApp extends StatelessWidget {
         // closer together (more dense) than on mobile platforms.
         visualDensity: VisualDensity.adaptivePlatformDensity,
       ),
-      home: MyHomePage(title: 'Discover'),
+      home: MyHomePage(),
     );
   }
 }
 
 class MyHomePage extends StatefulWidget {
-  MyHomePage({Key key, this.title}) : super(key: key);
-
-  // This widget is the home page of your application. It is stateful, meaning
-  // that it has a State object (defined below) that contains fields that affect
-  // how it looks.
-
-  // This class is the configuration for the state. It holds the values (in this
-  // case the title) provided by the parent (in this case the App widget) and
-  // used by the build method of the State. Fields in a Widget subclass are
-  // always marked "final".
-
-  final String title;
-
   @override
   _MyHomePageState createState() => _MyHomePageState();
+}
+
+class LocationListTile extends StatelessWidget {
+  final String title;
+  final String description;
+
+  const LocationListTile({
+    Key key,
+    this.title,
+    this.description,
+  }) : super(key: key);
+
+  @override
+  Widget build(BuildContext context) {
+    return Container(
+      child: Row(
+        children: [
+          Container(
+            width: 50,
+            height: 50,
+            decoration: BoxDecoration(
+              color: Colors.greenAccent,
+              borderRadius: BorderRadius.circular(8.0),
+              boxShadow: [
+                BoxShadow(
+                    color: Color(0x33000000),
+                    offset: Offset(0.0, 5.0),
+                    blurRadius: 12.0),
+              ],
+            ),
+          ),
+          Column(
+            children: [
+              Text(title),
+              Text(description),
+            ],
+          )
+        ],
+      ),
+    );
+  }
 }
 
 class _MyHomePageState extends State<MyHomePage> {
@@ -54,11 +82,6 @@ class _MyHomePageState extends State<MyHomePage> {
 
   void _incrementCounter() {
     setState(() {
-      // This call to setState tells the Flutter framework that something has
-      // changed in this State, which causes it to rerun the build method below
-      // so that the display can reflect the updated values. If we changed
-      // _counter without calling setState(), then the build method would not be
-      // called again, and so nothing would appear to happen.
       _counter++;
     });
   }
@@ -73,9 +96,22 @@ class _MyHomePageState extends State<MyHomePage> {
     // than having to individually change instances of widgets.
     return Scaffold(
       appBar: AppBar(
-        // Here we take the value from the MyHomePage object that was created by
-        // the App.build method, and use it to set our appbar title.
-        title: Text(widget.title),
+        title: Text(
+          'Discover',
+          style: TextStyle(color: Colors.black87),
+        ),
+        centerTitle: true,
+        elevation: 0.0,
+        backgroundColor: Colors.transparent,
+        actions: [
+          IconButton(
+            icon: Icon(
+              Icons.account_circle,
+              color: Colors.black87,
+            ),
+            onPressed: () {},
+          )
+        ],
       ),
       body: Center(
         // Center is a layout widget. It takes a single child and positions it
