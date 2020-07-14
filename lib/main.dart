@@ -59,49 +59,7 @@ class MyHomePage extends StatefulWidget {
   _MyHomePageState createState() => _MyHomePageState();
 }
 
-class LocationListTile extends StatelessWidget {
-  final String title;
-  final String description;
-
-  const LocationListTile({
-    Key key,
-    this.title,
-    this.description,
-  }) : super(key: key);
-
-  @override
-  Widget build(BuildContext context) {
-    return Container(
-      child: Row(
-        children: [
-          Container(
-            width: 50,
-            height: 50,
-            decoration: BoxDecoration(
-              color: Colors.greenAccent,
-              borderRadius: BorderRadius.circular(8.0),
-              boxShadow: [
-                BoxShadow(
-                    color: Color(0x33000000),
-                    offset: Offset(0.0, 5.0),
-                    blurRadius: 12.0),
-              ],
-            ),
-          ),
-          Column(
-            children: [
-              Text(title),
-              Text(description),
-            ],
-          )
-        ],
-      ),
-    );
-  }
-}
-
 class _MyHomePageState extends State<MyHomePage> {
-  int _counter = 0;
   double _appWidth;
 
   @override
@@ -165,6 +123,39 @@ class _MyHomePageState extends State<MyHomePage> {
                     imageUrl: featuredLocations[index].imageUrl,
                   ),
                 ),
+              ),
+              Column(
+                crossAxisAlignment: CrossAxisAlignment.stretch,
+                children: [
+                  Padding(
+                    padding: const EdgeInsets.fromLTRB(16.0, 8.0, 16.0, 8.0),
+                    child: Row(
+                      mainAxisAlignment: MainAxisAlignment.spaceBetween,
+                      crossAxisAlignment: CrossAxisAlignment.baseline,
+                      textBaseline: TextBaseline.alphabetic,
+                      children: [
+                        Text(
+                          'Top Locations',
+                          style: TextStyle(fontSize: 18),
+                        ),
+                        Text('View All')
+                      ],
+                    ),
+                  ),
+                  Container(
+                    height: 200,
+                    width: 200,
+                    child: ListView.builder(
+                        itemCount: 20,
+                        itemBuilder: (context, index) => Padding(
+                              padding:
+                                  const EdgeInsets.symmetric(vertical: 8.0),
+                              child: LocationListTile(
+                                title: '$index',
+                              ),
+                            )),
+                  )
+                ],
               ),
             ],
           ),
@@ -258,6 +249,43 @@ class FeaturedCard extends StatelessWidget {
             ),
           ),
         ),
+      ),
+    );
+  }
+}
+
+class LocationListTile extends StatelessWidget {
+  final String title;
+  final String description;
+
+  const LocationListTile({
+    Key key,
+    this.title,
+    this.description =
+        'Lorem ipsum dolor sit amet, consectetur adipiscing elit, sed do eiusmod tempor incididunt ut labore et dolore magna aliqua. Ut enim ad minim veniam, quis',
+  }) : super(key: key);
+
+  @override
+  Widget build(BuildContext context) {
+    return ListTile(
+      leading: Container(
+        width: 60,
+        height: 60,
+        decoration: BoxDecoration(
+          color: Colors.greenAccent,
+          borderRadius: BorderRadius.circular(16.0),
+          boxShadow: [
+            BoxShadow(
+                color: Color(0x33000000),
+                offset: Offset(0.0, 5.0),
+                blurRadius: 12.0)
+          ],
+        ),
+      ),
+      title: Text(title),
+      subtitle: Text(
+        description,
+        maxLines: 2,
       ),
     );
   }
