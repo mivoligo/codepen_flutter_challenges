@@ -5,6 +5,32 @@ void main() {
   runApp(MyApp());
 }
 
+class Location {
+  final String name;
+  final String imageUrl;
+
+  Location({this.name, this.imageUrl});
+}
+
+List featuredLocations = [
+  Location(
+      name: 'Tatra Mountains',
+      imageUrl:
+          'https://raw.githubusercontent.com/mivoligo/resources/master/tatry.jpg'),
+  Location(
+      name: 'Paris',
+      imageUrl:
+          'https://raw.githubusercontent.com/mivoligo/resources/master/france.jpg'),
+  Location(
+      name: 'Honsiu',
+      imageUrl:
+          'https://raw.githubusercontent.com/mivoligo/resources/master/japan.jpg'),
+  Location(
+      name: 'Manarola',
+      imageUrl:
+          'https://raw.githubusercontent.com/mivoligo/resources/master/italy.jpg')
+];
+
 class MyApp extends StatelessWidget {
   // This widget is the root of your application.
   @override
@@ -80,12 +106,7 @@ class LocationListTile extends StatelessWidget {
 
 class _MyHomePageState extends State<MyHomePage> {
   int _counter = 0;
-
-  void _incrementCounter() {
-    setState(() {
-      _counter++;
-    });
-  }
+  double _appWidth;
 
   @override
   Widget build(BuildContext context) {
@@ -95,6 +116,7 @@ class _MyHomePageState extends State<MyHomePage> {
     // The Flutter framework has been optimized to make rerunning build methods
     // fast, so that you can just rebuild anything that needs updating rather
     // than having to individually change instances of widgets.
+    _appWidth = MediaQuery.of(context).size.width;
     return Scaffold(
       appBar: AppBar(
         title: Text(
@@ -114,28 +136,24 @@ class _MyHomePageState extends State<MyHomePage> {
           )
         ],
       ),
-      body: Center(
-        // Center is a layout widget. It takes a single child and positions it
-        // in the middle of the parent.
-        child: Column(
-          mainAxisAlignment: MainAxisAlignment.center,
-          children: <Widget>[
-            Text(
-              'You have pushed the button this many times:',
+      body: Column(
+        children: <Widget>[
+          Container(
+            height: _appWidth * 0.8 * 0.7,
+            child: ListView.builder(
+              scrollDirection: Axis.horizontal,
+              itemCount: featuredLocations.length,
+              itemBuilder: (context, index) => FeaturedCard(
+                width: _appWidth * 0.8,
+                text: featuredLocations[index].name,
+                imageUrl: featuredLocations[index].imageUrl,
+              ),
             ),
-            Text(
-              '$_counter',
-              style: Theme.of(context).textTheme.headline4,
-            ),
-            FeaturedCard(),
-          ],
-        ),
+          ),
+          FeaturedCard(),
+        ],
       ),
-      floatingActionButton: FloatingActionButton(
-        onPressed: _incrementCounter,
-        tooltip: 'Increment',
-        child: Icon(Icons.add),
-      ), // This trailing comma makes auto-formatting nicer for build methods.
+      // This trailing comma makes auto-formatting nicer for build methods.
     );
   }
 }
@@ -168,7 +186,6 @@ class FeaturedCard extends StatelessWidget {
           children: [
             Container(
               width: width,
-              height: width * 0.7,
               decoration: BoxDecoration(
                   image: DecorationImage(
                 fit: BoxFit.cover,
