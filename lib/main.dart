@@ -150,7 +150,6 @@ class _MyHomePageState extends State<MyHomePage> {
               ),
             ),
           ),
-          FeaturedCard(),
         ],
       ),
       // This trailing comma makes auto-formatting nicer for build methods.
@@ -191,48 +190,55 @@ class FeaturedCard extends StatelessWidget {
                 fit: BoxFit.cover,
                 image: NetworkImage(imageUrl),
               )),
-              child: Padding(
-                padding: const EdgeInsets.all(16.0),
-                child: Column(
-                  mainAxisAlignment: MainAxisAlignment.end,
-                  crossAxisAlignment: CrossAxisAlignment.start,
-                  children: [
-                    Text(
-                      text,
-                      style: TextStyle(fontSize: 18.0, color: Colors.white),
-                    ),
-                    Row(children: [
-                      Icon(
-                        Icons.star,
-                        color: Colors.yellow,
-                        size: 16.0,
-                      ),
-                      Icon(
-                        Icons.star,
-                        color: Colors.yellow,
-                        size: 16.0,
-                      ),
-                      Icon(
-                        Icons.star,
-                        color: Colors.yellow,
-                        size: 16.0,
-                      ),
-                      Icon(
-                        Icons.star,
-                        color: Colors.yellow,
-                        size: 16.0,
-                      ),
-                      Icon(
-                        Icons.star_half,
-                        color: Colors.yellow,
-                        size: 16.0,
-                      ),
+              child: Container(
+                decoration: BoxDecoration(
+                    gradient: LinearGradient(
+                        end: Alignment.topCenter,
+                        begin: Alignment.bottomCenter,
+                        colors: [Color(0x99000000), Colors.transparent])),
+                child: Padding(
+                  padding: const EdgeInsets.all(16.0),
+                  child: Column(
+                    mainAxisAlignment: MainAxisAlignment.end,
+                    crossAxisAlignment: CrossAxisAlignment.start,
+                    children: [
                       Text(
-                        '4.2',
-                        style: TextStyle(fontSize: 12.0, color: Colors.white),
-                      )
-                    ]),
-                  ],
+                        text,
+                        style: TextStyle(fontSize: 18.0, color: Colors.white),
+                      ),
+                      Row(children: [
+                        Icon(
+                          Icons.star,
+                          color: Colors.yellow,
+                          size: 16.0,
+                        ),
+                        Icon(
+                          Icons.star,
+                          color: Colors.yellow,
+                          size: 16.0,
+                        ),
+                        Icon(
+                          Icons.star,
+                          color: Colors.yellow,
+                          size: 16.0,
+                        ),
+                        Icon(
+                          Icons.star,
+                          color: Colors.yellow,
+                          size: 16.0,
+                        ),
+                        Icon(
+                          Icons.star_half,
+                          color: Colors.yellow,
+                          size: 16.0,
+                        ),
+                        Text(
+                          '4.2',
+                          style: TextStyle(fontSize: 12.0, color: Colors.white),
+                        )
+                      ]),
+                    ],
+                  ),
                 ),
               ),
             )
