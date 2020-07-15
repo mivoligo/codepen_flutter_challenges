@@ -93,58 +93,49 @@ class _MyHomePageState extends State<MyHomePage> {
         ],
       ),
       body: Column(
-        children: <Widget>[
+        children: [
+          MainMenu(),
+          Container(
+            height: _appWidth * 0.6,
+            child: ListView.builder(
+              scrollDirection:
+                  _appWidth > _appHeight ? Axis.vertical : Axis.horizontal,
+              itemCount: featuredLocations.length,
+              itemBuilder: (context, index) => FeaturedCard(
+                text: featuredLocations[index].name,
+                imageUrl: featuredLocations[index].imageUrl,
+              ),
+            ),
+          ),
           Expanded(
             child: Column(
+              crossAxisAlignment: CrossAxisAlignment.stretch,
               children: [
-                MainMenu(),
-                Container(
-                  height: _appWidth * 0.6,
-                  child: ListView.builder(
-                    scrollDirection: _appWidth > _appHeight
-                        ? Axis.vertical
-                        : Axis.horizontal,
-                    itemCount: featuredLocations.length,
-                    itemBuilder: (context, index) => FeaturedCard(
-                      text: featuredLocations[index].name,
-                      imageUrl: featuredLocations[index].imageUrl,
-                    ),
-                  ),
-                ),
-                Expanded(
-                  child: Column(
-                    crossAxisAlignment: CrossAxisAlignment.stretch,
+                Padding(
+                  padding: const EdgeInsets.fromLTRB(16.0, 8.0, 16.0, 8.0),
+                  child: Row(
+                    mainAxisAlignment: MainAxisAlignment.spaceBetween,
+                    crossAxisAlignment: CrossAxisAlignment.baseline,
+                    textBaseline: TextBaseline.alphabetic,
                     children: [
-                      Padding(
-                        padding:
-                            const EdgeInsets.fromLTRB(16.0, 8.0, 16.0, 8.0),
-                        child: Row(
-                          mainAxisAlignment: MainAxisAlignment.spaceBetween,
-                          crossAxisAlignment: CrossAxisAlignment.baseline,
-                          textBaseline: TextBaseline.alphabetic,
-                          children: [
-                            Text(
-                              'Top Locations',
-                              style: TextStyle(fontSize: 18),
-                            ),
-                            Text('View All')
-                          ],
-                        ),
+                      Text(
+                        'Top Locations',
+                        style: TextStyle(fontSize: 18),
                       ),
-                      Expanded(
-                        child: ListView.builder(
-                            itemCount: 20,
-                            itemBuilder: (context, index) => Padding(
-                                  padding:
-                                      const EdgeInsets.symmetric(vertical: 8.0),
-                                  child: LocationListTile(
-                                    title: '$index',
-                                  ),
-                                )),
-                      )
+                      Text('View All')
                     ],
                   ),
                 ),
+                Expanded(
+                  child: ListView.builder(
+                      itemCount: 20,
+                      itemBuilder: (context, index) => Padding(
+                            padding: const EdgeInsets.symmetric(vertical: 8.0),
+                            child: LocationListTile(
+                              title: '$index',
+                            ),
+                          )),
+                )
               ],
             ),
           ),
