@@ -14,6 +14,20 @@ class Location {
   Location({this.name, this.imageUrl});
 }
 
+List images = [
+  'https://raw.githubusercontent.com/mivoligo/resources/master/1.jpg',
+  'https://raw.githubusercontent.com/mivoligo/resources/master/2.jpg',
+  'https://raw.githubusercontent.com/mivoligo/resources/master/3.jpg',
+  'https://raw.githubusercontent.com/mivoligo/resources/master/4.jpg',
+  'https://raw.githubusercontent.com/mivoligo/resources/master/5.jpg',
+  'https://raw.githubusercontent.com/mivoligo/resources/master/6.jpg',
+  'https://raw.githubusercontent.com/mivoligo/resources/master/7.jpg',
+  'https://raw.githubusercontent.com/mivoligo/resources/master/8.jpg',
+  'https://raw.githubusercontent.com/mivoligo/resources/master/9.jpg',
+  'https://raw.githubusercontent.com/mivoligo/resources/master/10.jpg',
+  'https://raw.githubusercontent.com/mivoligo/resources/master/11.jpg',
+];
+
 List featuredLocations = [
   Location(
       name: 'Tatra Mountains',
@@ -145,12 +159,12 @@ class _MyHomePageState extends State<MyHomePage> {
                       ),
                       Expanded(
                         child: ListView.builder(
-                            itemCount: 20,
                             itemBuilder: (context, index) => Padding(
                                   padding:
                                       const EdgeInsets.symmetric(vertical: 8.0),
                                   child: LocationListTile(
-                                    title: '$index',
+                                    title: 'Location ${index + 1}',
+                                    imageUrl: images[index % 11],
                                   ),
                                 )),
                       )
@@ -162,7 +176,6 @@ class _MyHomePageState extends State<MyHomePage> {
           ),
         ],
       ),
-      // This trailing comma makes auto-formatting nicer for build methods.
     );
   }
 }
@@ -281,12 +294,14 @@ class FeaturedCard extends StatelessWidget {
 class LocationListTile extends StatelessWidget {
   final String title;
   final String description;
+  final String imageUrl;
 
   const LocationListTile({
     Key key,
     this.title,
     this.description =
         'Lorem ipsum dolor sit amet, consectetur adipiscing elit, sed do eiusmod tempor incididunt ut labore et dolore magna aliqua. Ut enim ad minim veniam, quis',
+    this.imageUrl,
   }) : super(key: key);
 
   @override
@@ -295,7 +310,10 @@ class LocationListTile extends StatelessWidget {
       leading: Container(
         width: 50,
         decoration: BoxDecoration(
-          color: Colors.greenAccent,
+          image: DecorationImage(
+            image: NetworkImage(imageUrl),
+            fit: BoxFit.cover,
+          ),
           borderRadius: BorderRadius.circular(8.0),
           boxShadow: [
             BoxShadow(
