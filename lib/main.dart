@@ -80,6 +80,11 @@ class _MyHomePageState extends State<MyHomePage> {
   double _appWidth;
   double _appHeight;
 
+  bool get _isPortrait => _appWidth < _appHeight;
+
+  double get _locationListWidth =>
+      _isPortrait ? _appWidth : _appWidth - min(_appWidth / 2, 400);
+
   @override
   Widget build(BuildContext context) {
     // This method is rerun every time setState is called, for instance as done
@@ -114,22 +119,18 @@ class _MyHomePageState extends State<MyHomePage> {
           MainMenu(),
           Expanded(
             child: Flex(
-              direction:
-                  _appWidth < _appHeight ? Axis.vertical : Axis.horizontal,
+              direction: _isPortrait ? Axis.vertical : Axis.horizontal,
               children: [
                 Container(
                   constraints: BoxConstraints(
-                    maxWidth: _appWidth < _appHeight
-                        ? _appWidth
-                        : min(_appWidth / 2, 400),
-                    maxHeight: _appWidth < _appHeight
+                    maxWidth: _isPortrait ? _appWidth : min(_appWidth / 2, 400),
+                    maxHeight: _isPortrait
                         ? min(_appWidth * 0.6, 300)
                         : _appHeight - 100,
                   ),
                   child: ListView.builder(
-                    scrollDirection: _appWidth < _appHeight
-                        ? Axis.horizontal
-                        : Axis.vertical,
+                    scrollDirection:
+                        _isPortrait ? Axis.horizontal : Axis.vertical,
                     itemCount: featuredLocations.length,
                     itemBuilder: (context, index) => FeaturedCard(
                       text: featuredLocations[index].name,
@@ -158,15 +159,22 @@ class _MyHomePageState extends State<MyHomePage> {
                         ),
                       ),
                       Expanded(
-                        child: ListView.builder(
-                            itemBuilder: (context, index) => Padding(
-                                  padding:
-                                      const EdgeInsets.symmetric(vertical: 8.0),
-                                  child: LocationListTile(
-                                    title: 'Location ${index + 1}',
-                                    imageUrl: images[index % 11],
-                                  ),
-                                )),
+                        child: GridView.builder(
+                          gridDelegate:
+                              SliverGridDelegateWithFixedCrossAxisCount(
+                            childAspectRatio: _locationListWidth < 600
+                                ? _locationListWidth / 100
+                                : _locationListWidth / 200,
+                            crossAxisCount: _locationListWidth < 600 ? 1 : 2,
+                          ),
+                          itemBuilder: (context, index) => Padding(
+                            padding: const EdgeInsets.symmetric(vertical: 8.0),
+                            child: LocationListTile(
+                              title: 'Location ${index + 1}',
+                              imageUrl: images[index % 11],
+                            ),
+                          ),
+                        ),
                       )
                     ],
                   ),
@@ -195,9 +203,7 @@ class MainMenu extends StatelessWidget {
                       color: index == 0 ? Colors.deepPurple[800] : Colors.grey,
                       fontSize: 16.0),
                 ),
-                onPressed: () {
-                  print('$index');
-                },
+                onPressed: () {},
               )),
     );
   }
@@ -306,28 +312,46 @@ class LocationListTile extends StatelessWidget {
 
   @override
   Widget build(BuildContext context) {
-    return ListTile(
-      leading: Container(
-        width: 50,
-        decoration: BoxDecoration(
-          image: DecorationImage(
-            image: NetworkImage(imageUrl),
-            fit: BoxFit.cover,
+    return Container(
+      child: Row(
+        children: [
+          SizedBox(width: 16.0),
+          Container(
+            width: 90,
+            decoration: BoxDecoration(
+              image: DecorationImage(
+                image: NetworkImage(imageUrl),
+                fit: BoxFit.cover,
+              ),
+              borderRadius: BorderRadius.circular(8.0),
+              boxShadow: [
+                BoxShadow(
+                    color: Color(0xaa000000),
+                    offset: Offset(0.0, 5.0),
+                    blurRadius: 12.0)
+              ],
+            ),
           ),
-          borderRadius: BorderRadius.circular(8.0),
-          boxShadow: [
-            BoxShadow(
-                color: Color(0x33000000),
-                offset: Offset(0.0, 5.0),
-                blurRadius: 12.0)
-          ],
-        ),
-      ),
-      title: Text(title),
-      subtitle: Text(
-        description,
-        maxLines: 2,
-        overflow: TextOverflow.ellipsis,
+          SizedBox(width: 16.0),
+          Expanded(
+            child: Column(
+              crossAxisAlignment: CrossAxisAlignment.start,
+              children: [
+                Text(
+                  title,
+                  style: TextStyle(fontWeight: FontWeight.w500, fontSize: 20),
+                ),
+                Text(
+                  description,
+                  maxLines: 2,
+                  overflow: TextOverflow.ellipsis,
+                  style: TextStyle(fontSize: 18),
+                ),
+              ],
+            ),
+          ),
+          SizedBox(width: 16.0),
+        ],
       ),
     );
   }
