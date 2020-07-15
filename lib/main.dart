@@ -61,6 +61,7 @@ class MyHomePage extends StatefulWidget {
 
 class _MyHomePageState extends State<MyHomePage> {
   double _appWidth;
+  double _appHeight;
 
   @override
   Widget build(BuildContext context) {
@@ -71,6 +72,7 @@ class _MyHomePageState extends State<MyHomePage> {
     // fast, so that you can just rebuild anything that needs updating rather
     // than having to individually change instances of widgets.
     _appWidth = MediaQuery.of(context).size.width;
+    _appHeight = MediaQuery.of(context).size.height;
     return Scaffold(
       appBar: AppBar(
         title: Text(
@@ -92,76 +94,86 @@ class _MyHomePageState extends State<MyHomePage> {
       ),
       body: Column(
         children: <Widget>[
-          Column(
-            children: [
-              Container(
-                height: 20,
-                child: ListView.builder(
-                    scrollDirection: Axis.horizontal,
-                    itemCount: mainMenu.length,
-                    itemBuilder: (context, index) => FlatButton(
-                          child: Text(
-                            mainMenu[index],
-                            style: TextStyle(
-                                color: index == 0
-                                    ? Colors.deepPurple[800]
-                                    : Colors.grey,
-                                fontSize: 16.0),
-                          ),
-                          onPressed: () {
-                            print('$index');
-                          },
-                        )),
-              ),
-              Container(
-                height: _appWidth * 0.6,
-                child: ListView.builder(
-                  scrollDirection: Axis.horizontal,
-                  itemCount: featuredLocations.length,
-                  itemBuilder: (context, index) => FeaturedCard(
-                    text: featuredLocations[index].name,
-                    imageUrl: featuredLocations[index].imageUrl,
-                  ),
-                ),
-              ),
-              Column(
-                crossAxisAlignment: CrossAxisAlignment.stretch,
-                children: [
-                  Padding(
-                    padding: const EdgeInsets.fromLTRB(16.0, 8.0, 16.0, 8.0),
-                    child: Row(
-                      mainAxisAlignment: MainAxisAlignment.spaceBetween,
-                      crossAxisAlignment: CrossAxisAlignment.baseline,
-                      textBaseline: TextBaseline.alphabetic,
-                      children: [
-                        Text(
-                          'Top Locations',
-                          style: TextStyle(fontSize: 18),
-                        ),
-                        Text('View All')
-                      ],
+          Expanded(
+            child: Column(
+              children: [
+                MainMenu(),
+                Container(
+                  height: _appWidth * 0.6,
+                  child: ListView.builder(
+                    scrollDirection: _appWidth > _appHeight
+                        ? Axis.vertical
+                        : Axis.horizontal,
+                    itemCount: featuredLocations.length,
+                    itemBuilder: (context, index) => FeaturedCard(
+                      text: featuredLocations[index].name,
+                      imageUrl: featuredLocations[index].imageUrl,
                     ),
                   ),
-                  Container(
-                    height: 200,
-                    width: 200,
-                    child: ListView.builder(
-                        itemCount: 20,
-                        itemBuilder: (context, index) => Padding(
-                              padding:
-                                  const EdgeInsets.symmetric(vertical: 8.0),
-                              child: LocationListTile(
-                                title: '$index',
-                              ),
-                            )),
-                  )
-                ],
-              ),
-            ],
+                ),
+                Expanded(
+                  child: Column(
+                    crossAxisAlignment: CrossAxisAlignment.stretch,
+                    children: [
+                      Padding(
+                        padding:
+                            const EdgeInsets.fromLTRB(16.0, 8.0, 16.0, 8.0),
+                        child: Row(
+                          mainAxisAlignment: MainAxisAlignment.spaceBetween,
+                          crossAxisAlignment: CrossAxisAlignment.baseline,
+                          textBaseline: TextBaseline.alphabetic,
+                          children: [
+                            Text(
+                              'Top Locations',
+                              style: TextStyle(fontSize: 18),
+                            ),
+                            Text('View All')
+                          ],
+                        ),
+                      ),
+                      Expanded(
+                        child: ListView.builder(
+                            itemCount: 20,
+                            itemBuilder: (context, index) => Padding(
+                                  padding:
+                                      const EdgeInsets.symmetric(vertical: 8.0),
+                                  child: LocationListTile(
+                                    title: '$index',
+                                  ),
+                                )),
+                      )
+                    ],
+                  ),
+                ),
+              ],
+            ),
           ),
         ],
       ),
       // This trailing comma makes auto-formatting nicer for build methods.
+    );
+  }
+}
+
+class MainMenu extends StatelessWidget {
+  @override
+  Widget build(BuildContext context) {
+    return Container(
+      height: 30,
+      child: ListView.builder(
+          scrollDirection: Axis.horizontal,
+          itemCount: mainMenu.length,
+          itemBuilder: (context, index) => FlatButton(
+                child: Text(
+                  mainMenu[index],
+                  style: TextStyle(
+                      color: index == 0 ? Colors.deepPurple[800] : Colors.grey,
+                      fontSize: 16.0),
+                ),
+                onPressed: () {
+                  print('$index');
+                },
+              )),
     );
   }
 }
