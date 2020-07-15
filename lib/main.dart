@@ -293,11 +293,10 @@ class LocationListTile extends StatelessWidget {
   Widget build(BuildContext context) {
     return ListTile(
       leading: Container(
-        width: 60,
-        height: 60,
+        width: 50,
         decoration: BoxDecoration(
           color: Colors.greenAccent,
-          borderRadius: BorderRadius.circular(16.0),
+          borderRadius: BorderRadius.circular(8.0),
           boxShadow: [
             BoxShadow(
                 color: Color(0x33000000),
@@ -310,6 +309,7 @@ class LocationListTile extends StatelessWidget {
       subtitle: Text(
         description,
         maxLines: 2,
+        overflow: TextOverflow.ellipsis,
       ),
     );
   }
