@@ -1,3 +1,5 @@
+import 'dart:math';
+
 import 'package:flutter/material.dart';
 import 'package:flutter/rendering.dart';
 
@@ -95,47 +97,66 @@ class _MyHomePageState extends State<MyHomePage> {
       body: Column(
         children: [
           MainMenu(),
-          Container(
-            height: _appWidth * 0.6,
-            child: ListView.builder(
-              scrollDirection:
-                  _appWidth > _appHeight ? Axis.vertical : Axis.horizontal,
-              itemCount: featuredLocations.length,
-              itemBuilder: (context, index) => FeaturedCard(
-                text: featuredLocations[index].name,
-                imageUrl: featuredLocations[index].imageUrl,
-              ),
-            ),
-          ),
           Expanded(
-            child: Column(
-              crossAxisAlignment: CrossAxisAlignment.stretch,
+            child: Flex(
+              direction:
+                  _appWidth < _appHeight ? Axis.vertical : Axis.horizontal,
               children: [
-                Padding(
-                  padding: const EdgeInsets.fromLTRB(16.0, 8.0, 16.0, 8.0),
-                  child: Row(
-                    mainAxisAlignment: MainAxisAlignment.spaceBetween,
-                    crossAxisAlignment: CrossAxisAlignment.baseline,
-                    textBaseline: TextBaseline.alphabetic,
-                    children: [
-                      Text(
-                        'Top Locations',
-                        style: TextStyle(fontSize: 18),
-                      ),
-                      Text('View All')
-                    ],
+                Container(
+                  constraints: BoxConstraints(
+                    maxWidth: _appWidth < _appHeight
+                        ? _appWidth
+                        : min(_appWidth / 2, 400),
+                    maxHeight: _appWidth < _appHeight
+                        ? min(_appWidth * 0.6, 300)
+                        : _appHeight - 100,
+//                      minHeight: 100
+                  ),
+                  child: ListView.builder(
+                    scrollDirection: _appWidth < _appHeight
+                        ? Axis.horizontal
+                        : Axis.vertical,
+                    itemCount: featuredLocations.length,
+                    itemBuilder: (context, index) => FeaturedCard(
+                      text: featuredLocations[index].name,
+                      imageUrl: featuredLocations[index].imageUrl,
+                    ),
                   ),
                 ),
                 Expanded(
-                  child: ListView.builder(
-                      itemCount: 20,
-                      itemBuilder: (context, index) => Padding(
-                            padding: const EdgeInsets.symmetric(vertical: 8.0),
-                            child: LocationListTile(
-                              title: '$index',
+                  child: Column(
+                    crossAxisAlignment: CrossAxisAlignment.stretch,
+                    children: [
+                      Padding(
+                        padding:
+                            const EdgeInsets.fromLTRB(16.0, 8.0, 16.0, 8.0),
+                        child: Row(
+                          mainAxisAlignment: MainAxisAlignment.spaceBetween,
+                          crossAxisAlignment: CrossAxisAlignment.baseline,
+                          textBaseline: TextBaseline.alphabetic,
+                          children: [
+                            Text(
+                              'Top Locations',
+                              style: TextStyle(fontSize: 18),
                             ),
-                          )),
-                )
+                            Text('View All')
+                          ],
+                        ),
+                      ),
+                      Expanded(
+                        child: ListView.builder(
+                            itemCount: 20,
+                            itemBuilder: (context, index) => Padding(
+                                  padding:
+                                      const EdgeInsets.symmetric(vertical: 8.0),
+                                  child: LocationListTile(
+                                    title: '$index',
+                                  ),
+                                )),
+                      )
+                    ],
+                  ),
+                ),
               ],
             ),
           ),
