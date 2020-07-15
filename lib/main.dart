@@ -51,6 +51,7 @@ class MyApp extends StatelessWidget {
       theme: ThemeData(
         visualDensity: VisualDensity.adaptivePlatformDensity,
       ),
+      debugShowCheckedModeBanner: false,
       home: MyHomePage(),
     );
   }
@@ -110,7 +111,6 @@ class _MyHomePageState extends State<MyHomePage> {
                     maxHeight: _appWidth < _appHeight
                         ? min(_appWidth * 0.6, 300)
                         : _appHeight - 100,
-//                      minHeight: 100
                   ),
                   child: ListView.builder(
                     scrollDirection: _appWidth < _appHeight
