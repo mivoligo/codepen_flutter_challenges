@@ -1,7 +1,6 @@
 import 'dart:math';
 
 import 'package:flutter/material.dart';
-import 'package:flutter/rendering.dart';
 
 void main() {
   runApp(MyApp());
@@ -57,7 +56,6 @@ List mainMenu = [
 ];
 
 class MyApp extends StatelessWidget {
-  // This widget is the root of your application.
   @override
   Widget build(BuildContext context) {
     return MaterialApp(
@@ -87,12 +85,6 @@ class _MyHomePageState extends State<MyHomePage> {
 
   @override
   Widget build(BuildContext context) {
-    // This method is rerun every time setState is called, for instance as done
-    // by the _incrementCounter method above.
-    //
-    // The Flutter framework has been optimized to make rerunning build methods
-    // fast, so that you can just rebuild anything that needs updating rather
-    // than having to individually change instances of widgets.
     _appWidth = MediaQuery.of(context).size.width;
     _appHeight = MediaQuery.of(context).size.height;
     return Scaffold(
@@ -103,7 +95,7 @@ class _MyHomePageState extends State<MyHomePage> {
         ),
         centerTitle: true,
         elevation: 0.0,
-        backgroundColor: Colors.transparent,
+        backgroundColor: Color(0xffeff0fd),
         actions: [
           IconButton(
             icon: Icon(
@@ -114,75 +106,85 @@ class _MyHomePageState extends State<MyHomePage> {
           )
         ],
       ),
-      body: Column(
-        children: [
-          MainMenu(),
-          Expanded(
-            child: Flex(
-              direction: _isPortrait ? Axis.vertical : Axis.horizontal,
-              children: [
-                Container(
-                  constraints: BoxConstraints(
-                    maxWidth: _isPortrait ? _appWidth : min(_appWidth / 2, 400),
-                    maxHeight: _isPortrait
-                        ? min(_appWidth * 0.6, 300)
-                        : _appHeight - 100,
-                  ),
-                  child: ListView.builder(
-                    scrollDirection:
-                        _isPortrait ? Axis.horizontal : Axis.vertical,
-                    itemCount: featuredLocations.length,
-                    itemBuilder: (context, index) => FeaturedCard(
-                      text: featuredLocations[index].name,
-                      imageUrl: featuredLocations[index].imageUrl,
+      body: Container(
+        decoration: BoxDecoration(
+          gradient: LinearGradient(
+              begin: Alignment.bottomLeft,
+              end: Alignment.topCenter,
+              colors: [Color(0xffe8edfd), Color(0xffeff0fd)]),
+        ),
+        child: Column(
+          children: [
+            MainMenu(),
+            Expanded(
+              child: Flex(
+                direction: _isPortrait ? Axis.vertical : Axis.horizontal,
+                children: [
+                  Container(
+                    constraints: BoxConstraints(
+                      maxWidth:
+                          _isPortrait ? _appWidth : min(_appWidth / 2, 400),
+                      maxHeight: _isPortrait
+                          ? min(_appWidth * 0.6, 300)
+                          : _appHeight - 100,
+                    ),
+                    child: ListView.builder(
+                      scrollDirection:
+                          _isPortrait ? Axis.horizontal : Axis.vertical,
+                      itemCount: featuredLocations.length,
+                      itemBuilder: (context, index) => FeaturedCard(
+                        text: featuredLocations[index].name,
+                        imageUrl: featuredLocations[index].imageUrl,
+                      ),
                     ),
                   ),
-                ),
-                Expanded(
-                  child: Column(
-                    crossAxisAlignment: CrossAxisAlignment.stretch,
-                    children: [
-                      Padding(
-                        padding:
-                            const EdgeInsets.fromLTRB(16.0, 8.0, 16.0, 8.0),
-                        child: Row(
-                          mainAxisAlignment: MainAxisAlignment.spaceBetween,
-                          crossAxisAlignment: CrossAxisAlignment.baseline,
-                          textBaseline: TextBaseline.alphabetic,
-                          children: [
-                            Text(
-                              'Top Locations',
-                              style: TextStyle(fontSize: 18),
-                            ),
-                            Text('View All')
-                          ],
-                        ),
-                      ),
-                      Expanded(
-                        child: GridView.builder(
-                          gridDelegate:
-                              SliverGridDelegateWithFixedCrossAxisCount(
-                            childAspectRatio: _locationListWidth < 600
-                                ? _locationListWidth / 100
-                                : _locationListWidth / 200,
-                            crossAxisCount: _locationListWidth < 600 ? 1 : 2,
-                          ),
-                          itemBuilder: (context, index) => Padding(
-                            padding: const EdgeInsets.symmetric(vertical: 8.0),
-                            child: LocationListTile(
-                              title: 'Location ${index + 1}',
-                              imageUrl: images[index % 11],
-                            ),
+                  Expanded(
+                    child: Column(
+                      crossAxisAlignment: CrossAxisAlignment.stretch,
+                      children: [
+                        Padding(
+                          padding:
+                              const EdgeInsets.fromLTRB(16.0, 8.0, 16.0, 8.0),
+                          child: Row(
+                            mainAxisAlignment: MainAxisAlignment.spaceBetween,
+                            crossAxisAlignment: CrossAxisAlignment.baseline,
+                            textBaseline: TextBaseline.alphabetic,
+                            children: [
+                              Text(
+                                'Top Locations',
+                                style: TextStyle(fontSize: 18),
+                              ),
+                              Text('View All')
+                            ],
                           ),
                         ),
-                      )
-                    ],
+                        Expanded(
+                          child: GridView.builder(
+                            gridDelegate:
+                                SliverGridDelegateWithFixedCrossAxisCount(
+                              childAspectRatio: _locationListWidth < 600
+                                  ? _locationListWidth / 100
+                                  : _locationListWidth / 200,
+                              crossAxisCount: _locationListWidth < 600 ? 1 : 2,
+                            ),
+                            itemBuilder: (context, index) => Padding(
+                              padding:
+                                  const EdgeInsets.symmetric(vertical: 8.0),
+                              child: LocationListTile(
+                                title: 'Location ${index + 1}',
+                                imageUrl: images[index % 11],
+                              ),
+                            ),
+                          ),
+                        )
+                      ],
+                    ),
                   ),
-                ),
-              ],
+                ],
+              ),
             ),
-          ),
-        ],
+          ],
+        ),
       ),
     );
   }
@@ -335,17 +337,18 @@ class LocationListTile extends StatelessWidget {
           SizedBox(width: 16.0),
           Expanded(
             child: Column(
+              mainAxisAlignment: MainAxisAlignment.spaceAround,
               crossAxisAlignment: CrossAxisAlignment.start,
               children: [
                 Text(
                   title,
-                  style: TextStyle(fontWeight: FontWeight.w500, fontSize: 20),
+                  style: TextStyle(fontWeight: FontWeight.w500, fontSize: 18),
                 ),
                 Text(
                   description,
                   maxLines: 2,
                   overflow: TextOverflow.ellipsis,
-                  style: TextStyle(fontSize: 18),
+                  style: TextStyle(fontSize: 16),
                 ),
               ],
             ),
